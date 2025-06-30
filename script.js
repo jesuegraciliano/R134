@@ -1,4 +1,4 @@
-/ Tabelas de propriedades termodinâmicas
+// Tabelas de propriedades sem interpolação, apenas valores de -20 a +50
 const tables = {
   R134A: {
     "-20": { P: 132.99, HL: 23.97, HV: 235.02 },
@@ -39,87 +39,52 @@ const tables = {
     "50":  { P: 1317.62, HL: 120.51, HV: 271.54 }
   },
   R410A: {
-    "-60": { P: 64.1,  Hf: -27.45, Hv: 252.51 },
-    "-55": { P: 84.0,  Hf: -20.64, Hv: 255.19 },
-    "-51.4":{ P:101.3, Hf: -15.70, Hv: 257.08 },
-    "-50": { P:108.7, Hf: -13.80, Hv: 257.80 },
-    "-45": { P:138.8, Hf: -6.92,  Hv: 260.35 },
-    "-40": { P:175.0, Hf: 0.00,   Hv: 262.83 },
-    "-35": { P:218.4, Hf: 6.97,   Hv: 265.23 },
-    "-30": { P:269.6, Hf: 13.99,  Hv: 267.54 },
-    "-25": { P:329.7, Hf: 21.08,  Hv: 269.77 },
-    "-20": { P:399.6, Hf: 28.24,  Hv: 271.89 },
-    "-15": { P:480.4, Hf: 35.47,  Hv: 273.90 },
-    "-10": { P:573.1, Hf: 42.80,  Hv: 275.78 },
-    "-5":  { P:678.9, Hf: 50.22,  Hv: 277.53 },
-    "0":   { P:798.7, Hf: 57.76,  Hv: 279.12 },
-    "5":   { P:933.9, Hf: 65.41,  Hv: 280.55 },
-    "10":  { P:1085.7,Hf: 73.21,  Hv: 281.78 },
-    "15":  { P:1255.4,Hf: 81.18,  Hv: 282.79 },
-    "20":  { P:1444.2,Hf: 89.27,  Hv: 283.55 },
-    "25":  { P:1653.6,Hf: 97.59,  Hv: 284.02 },
-    "30":  { P:1885.1,Hf:106.14,  Hv: 284.16 },
-    "35":  { P:2140.2,Hf:114.95,  Hv: 283.89 },
-    "40":  { P:2420.7,Hf:124.09,  Hv: 283.13 },
-    "45":  { P:2728.3,Hf:133.61,  Hv: 281.76 },
-    "50":  { P:3065.2,Hf:143.65,  Hv: 279.58 }
+    "-20": { P: 399.6, Hf: 28.24, Hv: 271.89 },
+    "-15": { P: 480.4, Hf: 35.47, Hv: 273.90 },
+    "-10": { P: 573.1, Hf: 42.80, Hv: 275.78 },
+    "-5":  { P: 678.9, Hf: 50.22, Hv: 277.53 },
+    "0":   { P: 798.7, Hf: 57.76, Hv: 279.12 },
+    "5":   { P: 933.9, Hf: 65.41, Hv: 280.55 },
+    "10":  { P: 1085.7, Hf: 73.21, Hv: 281.78 },
+    "15":  { P: 1255.4, Hf: 81.18, Hv: 282.79 },
+    "20":  { P: 1444.2, Hf: 89.27, Hv: 283.55 },
+    "25":  { P: 1653.6, Hf: 97.59, Hv: 284.02 },
+    "30":  { P: 1885.1, Hf:106.14, Hv: 284.16 },
+    "35":  { P: 2140.2, Hf:114.95, Hv: 283.89 },
+    "40":  { P: 2420.7, Hf:124.09, Hv: 283.13 },
+    "45":  { P: 2728.3, Hf:133.61, Hv: 281.76 },
+    "50":  { P: 3065.2, Hf:143.65, Hv: 279.58 }
   }
 };
 
-// Função de interpolação linear
-function interpolate(x, x0, y0, x1, y1) {
-  return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+// DOM elements
+const fluidSelect = document.getElementById('fluid');
+const tempSelect  = document.getElementById('temperature');
+const btnCalc     = document.getElementById('calculate-btn');
+const resultDiv   = document.getElementById('result');
+
+// Preenche dropdown de temperaturas
+function populateTemps() {
+  const fluid = fluidSelect.value;
+  tempSelect.innerHTML = Object.keys(tables[fluid])
+    .map(t => `<option value="${t}">${t.replace('.', ',')}</option>`)
+    .join('');
 }
 
-document.getElementById('calculate-btn').addEventListener('click', () => {
-  const fluid = document.getElementById('fluid').value;
-  const T = parseFloat(document.getElementById('temperature').value);
-  const raw = tables[fluid];
-  const resultDiv = document.getElementById('result');
+fluidSelect.addEventListener('change', populateTemps);
+window.addEventListener('load', populateTemps);
 
-  if (isNaN(T)) {
-    resultDiv.innerHTML = `<p>Informe uma temperatura válida.</p>`;
-    return;
-  }
-
-  // Converter entradas em array ordenado
-  const data = Object.entries(raw)
-    .map(([t, props]) => ({ t: parseFloat(t), props }))
-    .sort((a,b) => a.t - b.t);
-
-  const tMin = data[0].t, tMax = data[data.length-1].t;
-  if (T < tMin || T > tMax) {
-    resultDiv.innerHTML = `<p>Temperatura fora do intervalo: ${tMin} a ${tMax} °C.</p>`;
-    return;
-  }
-
-  let P, HL, HV;
-  // Checar se existe valor exato
-  const exact = raw[T.toString()];
-  if (exact) {
-    P  = exact.P;
-    HL = exact.HL ?? exact.Hf;
-    HV = exact.HV ?? exact.Hv;
-  } else {
-    // Encontrar vizinhos
-    let lower = data[0], upper = data[data.length-1];
-    for (let i = 0; i < data.length-1; i++) {
-      if (data[i].t < T && data[i+1].t > T) {
-        lower = data[i];
-        upper = data[i+1];
-        break;
-      }
-    }
-    P  = interpolate(T, lower.t, lower.props.P, upper.t, upper.props.P);
-    HL = interpolate(T, lower.t, lower.props.HL ?? lower.props.Hf, upper.t, upper.props.HL ?? upper.props.Hf);
-    HV = interpolate(T, lower.t, lower.props.HV ?? lower.props.Hv, upper.t, upper.props.HV ?? upper.props.Hv);
-  }
+// Cálculo via lookup simples
+btnCalc.addEventListener('click', () => {
+  const fluid = fluidSelect.value;
+  const temp  = tempSelect.value;
+  const props = tables[fluid][temp];
 
   resultDiv.innerHTML = `
     <p><strong>Fluido:</strong> ${fluid}</p>
-    <p><strong>Temperatura:</strong> ${T.toFixed(2).replace('.', ',')} °C</p>
-    <p><strong>P:</strong> ${P.toFixed(2).replace('.', ',')} kPa</p>
-    <p><strong>${fluid==='R410A'?'Hf':'HL'}:</strong> ${HL.toFixed(2).replace('.', ',')} kJ/kg</p>
-    <p><strong>Hv:</strong> ${HV.toFixed(2).replace('.', ',')} kJ/kg</p>
+    <p><strong>Temperatura:</strong> ${temp.replace('.', ',')} °C</p>
+    <p><strong>P:</strong> ${props.P.toFixed(2).replace('.', ',')} kPa</p>
+    <p><strong>${fluid === 'R410A' ? 'Hf' : 'HL'}:</strong> ${(props.HL ?? props.Hf).toFixed(2).replace('.', ',')} kJ/kg</p>
+    <p><strong>Hv:</strong> ${(props.HV ?? props.Hv).toFixed(2).replace('.', ',')} kJ/kg</p>
   `;
 });
