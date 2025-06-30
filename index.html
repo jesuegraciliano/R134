@@ -7,24 +7,31 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Calculadora Termodinâmica</h1>
+  <div class="wrapper">
+    <div class="container">
+      <h1>Calculadora Termodinâmica</h1>
+      <p class="subtitle">SELECIONE O FLUIDO REFRIGERANTE</p>
 
-    <div class="input-group">
-      <label for="fluid">Fluido:</label>
-      <select id="fluid">
-        <option value="R134A">R134A</option>
-        <option value="R410A">R410A</option>
-      </select>
+      <div class="input-group">
+        <label for="fluid">Fluido:</label>
+        <select id="fluid">
+          <option value="R134A">R134A</option>
+          <option value="R410A">R410A</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="temperature">Temperatura (°C):</label>
+        <select id="temperature"></select>
+      </div>
+
+      <button id="calculate-btn">Calcular</button>
+      <div id="result"></div>
     </div>
 
-    <div class="input-group">
-      <label for="temperature">Temperatura (°C):</label>
-      <select id="temperature"></select>
+    <div class="logo">
+      <img src="ifsclogo.jpg" alt="Logo IFSC Campus São José">
     </div>
-
-    <button id="calculate-btn">Calcular</button>
-    <div id="result"></div>
   </div>
 
   <script src="script.js"></script>
