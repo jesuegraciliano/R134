@@ -1,4 +1,4 @@
-// Tabelas de propriedades, apenas valores inteiros de -20 a +50°C
+// Tabelas de propriedades sem interpolação, apenas valores de -20 a +50
 const tables = {
   R134A: {
     "-20": { P: 132.99, HL: 23.97, HV: 235.02 },
@@ -39,31 +39,31 @@ const tables = {
     "50":  { P: 1317.62, HL: 120.51, HV: 271.54 }
   },
   R410A: {
-    "-20": { P: 399.6,  Hf: 28.24,  Hv: 271.89 },
-    "-15": { P: 480.4,  Hf: 35.47,  Hv: 273.90 },
-    "-10": { P: 573.1,  Hf: 42.80,  Hv: 275.78 },
-    "-5":  { P: 678.9,  Hf: 50.22,  Hv: 277.53 },
-    "0":   { P: 798.7,  Hf: 57.76,  Hv: 279.12 },
-    "5":   { P: 933.9,  Hf: 65.41,  Hv: 280.55 },
-    "10":  { P: 1085.7, Hf: 73.21,  Hv: 281.78 },
-    "15":  { P: 1255.4, Hf: 81.18,  Hv: 282.79 },
-    "20":  { P: 1444.2, Hf: 89.27,  Hv: 283.55 },
-    "25":  { P: 1653.6, Hf: 97.59,  Hv: 284.02 },
-    "30":  { P: 1885.1, Hf:106.14,  Hv: 284.16 },
-    "35":  { P: 2140.2, Hf:114.95,  Hv: 283.89 },
-    "40":  { P: 2420.7, Hf:124.09,  Hv: 283.13 },
-    "45":  { P: 2728.3, Hf:133.61,  Hv: 281.76 },
-    "50":  { P: 3065.2, Hf:143.65,  Hv: 279.58 }
+    "-20": { P: 399.6, Hf: 28.24, Hv: 271.89 },
+    "-15": { P: 480.4, Hf: 35.47, Hv: 273.90 },
+    "-10": { P: 573.1, Hf: 42.80, Hv: 275.78 },
+    "-5":  { P: 678.9, Hf: 50.22, Hv: 277.53 },
+    "0":   { P: 798.7, Hf: 57.76, Hv: 279.12 },
+    "5":   { P: 933.9, Hf: 65.41, Hv: 280.55 },
+    "10":  { P: 1085.7, Hf: 73.21, Hv: 281.78 },
+    "15":  { P: 1255.4, Hf: 81.18, Hv: 282.79 },
+    "20":  { P: 1444.2, Hf: 89.27, Hv: 283.55 },
+    "25":  { P: 1653.6, Hf: 97.59, Hv: 284.02 },
+    "30":  { P: 1885.1, Hf:106.14, Hv: 284.16 },
+    "35":  { P: 2140.2, Hf:114.95, Hv: 283.89 },
+    "40":  { P: 2420.7, Hf:124.09, Hv: 283.13 },
+    "45":  { P: 2728.3, Hf:133.61, Hv: 281.76 },
+    "50":  { P: 3065.2, Hf:143.65, Hv: 279.58 }
   }
 };
 
-// Elementos do DOM
+// DOM elements
 const fluidSelect = document.getElementById('fluid');
 const tempSelect  = document.getElementById('temperature');
 const btnCalc     = document.getElementById('calculate-btn');
 const resultDiv   = document.getElementById('result');
 
-// Popula as temperaturas válidas
+// Preenche dropdown de temperaturas
 function populateTemps() {
   const fluid = fluidSelect.value;
   tempSelect.innerHTML = Object.keys(tables[fluid])
@@ -74,7 +74,7 @@ function populateTemps() {
 fluidSelect.addEventListener('change', populateTemps);
 window.addEventListener('load', populateTemps);
 
-// Ao clicar em “Calcular”, exibe P, HL/Hf e HV/Hv
+// Cálculo via lookup simples
 btnCalc.addEventListener('click', () => {
   const fluid = fluidSelect.value;
   const temp  = tempSelect.value;
