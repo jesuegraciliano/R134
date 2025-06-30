@@ -44,11 +44,11 @@ document.getElementById('calculate-btn').addEventListener('click', () => {
     const { P, HL, HV } = tabela[temp];
     resultado.innerHTML = `
       <p>Para T = ${temp} °C:</p>
-      <p><strong>P</strong>: ${P} kPa</p>
-      <p><strong>HL</strong>: ${HL} kJ/kg</p>
-      <p><strong>HV</strong>: ${HV} kJ/kg</p>
+      <p><strong>P</strong>: ${P.toFixed(2).replace('.', ',')} kPa</p>
+      <p><strong>HL</strong>: ${HL.toFixed(2).replace('.', ',')} kJ/kg</p>
+      <p><strong>HV</strong>: ${HV.toFixed(2).replace('.', ',')} kJ/kg</p>
     `;
   } else {
-    resultado.innerHTML = `<p>Temperatura não disponível. Utilize valores de -20 a 50 °C em incrementos de 2 °C.</p>`;
+    resultado.innerHTML = `<p>Temperatura não disponível. Use -20 a 50 °C em passos de 2 °C.</p>`;
   }
 });
