@@ -3,17 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de P, HL e HV - R134a</title>
+  <title>Calculadora Termodinâmica</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Calculadora de P, HL e HV para R134a</h1>
-    <label for="temperature">Temperatura (°C):</label>
-    <input type="number" id="temperature" step="2" placeholder="Digite a temperatura">
+    <h1>Calculadora Termodinâmica</h1>
+    <div class="input-group">
+      <label for="fluid">Fluido:</label>
+      <select id="fluid">
+        <option value="R134A">R134A</option>
+        <option value="R410A">R410A</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="temperature">Temperatura (°C):</label>
+      <input type="number" id="temperature" step="any" placeholder="Digite a temperatura">
+    </div>
     <button id="calculate-btn">Calcular</button>
     <div id="result"></div>
   </div>
   <script src="script.js"></script>
 </body>
 </html>
+```
+
+# style.css
+```css
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 360px;
+  margin: 80px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.input-group {
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 1.1rem;
+}
