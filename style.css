@@ -1,3 +1,11 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Corpo da página */
 body {
   margin: 0;
   padding: 0;
@@ -8,6 +16,7 @@ body {
   align-items: center;
 }
 
+/* Cabeçalho e logo */
 header {
   width: 100%;
   max-width: 360px;
@@ -16,12 +25,13 @@ header {
 }
 
 .logo img {
-  width: 100px;    /* ligeiramente menor */
+  width: 100px;    /* ligeiramente menor para caber melhor */
   height: auto;
   display: block;
   margin: 0 auto 20px;
 }
 
+/* Container do formulário */
 .form-container {
   background: #fff;
   border-radius: 8px;
@@ -29,6 +39,7 @@ header {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+/* Títulos e legendas */
 h1 {
   margin: 0 0 8px;
   font-size: 1.4rem;
@@ -42,6 +53,7 @@ h1 {
   font-size: 0.9rem;
 }
 
+/* Grupos de entrada (labels + selects) */
 .input-group {
   margin-bottom: 12px;
   text-align: left;
@@ -63,24 +75,31 @@ button {
   box-sizing: border-box;
 }
 
+/* Botão de cálculo */
 button {
   margin-top: 12px;
   background-color: #007bff;
   color: #fff;
   border: none;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
+/* Resultado */
 #result {
   margin-top: 16px;
   font-size: 1rem;
   text-align: left;
+  background-color: #e9f5ff;
+  padding: 12px;
+  border-radius: 4px;
 }
 
+/* Seção do diagrama */
 .diagram-container {
   width: 100%;
   max-width: 360px;
