@@ -1,73 +1,44 @@
-// 1. DECLARE a constante com os dados ANTES de usá-la.
-const tables = {
-  // OBS: Adicione os dados para R134A e R410A para que funcionem no seletor.
-  R134A: {
-    /* … dados para R134A … */
-  },
-  R410A: {
-    /* … dados para R410A … */
-  },
-  R404A: {
-    "-50": { P:   85.2, HL: 133.1, HV: 337.3 },
-    "-45": { P:  108.6, HL: 139.3, HV: 340.6 },
-    "-40": { P:  136.7, HL: 145.6, HV: 343.8 },
-    "-35": { P:  170.1, HL: 152.4, HV: 347.0 },
-    "-30": { P:  209.5, HL: 159.9, HV: 350.3 },
-    "-25": { P:  255.4, HL: 166.3, HV: 353.4 },
-    "-20": { P:  308.7, HL: 172.8, HV: 356.5 },
-    "-15": { P:  370.1, HL: 179.4, HV: 359.6 },
-    "-10": { P:  440.4, HL: 186.1, HV: 362.6 },
-    "-5":  { P:  520.5, HL: 193.0, HV: 365.5 },
-    "0":   { P:  611.1, HL: 200.0, HV: 368.3 },
-    "5":   { P:  713.3, HL: 207.2, HV: 371.0 },
-    "10":  { P:  827.8, HL: 214.5, HV: 373.6 },
-    "15":  { P:  955.6, HL: 222.1, HV: 376.0 },
-    "20":  { P: 1097.7, HL: 229.9, HV: 378.3 },
-    "25":  { P: 1255.0, HL: 237.9, HV: 380.4 },
-    "30":  { P: 1422.7, HL: 246.2, HV: 382.2 },
-    "35":  { P: 1619.7, HL: 254.8, HV: 383.8 },
-    "40":  { P: 1829.2, HL: 263.8, HV: 385.1 },
-    "45":  { P: 2058.3, HL: 273.2, HV: 385.8 },
-    "50":  { P: 2308.2, HL: 283.2, HV: 386.1 }
-  }
-};
 
-// DEBUG: Agora esta linha funciona, pois `tables` já existe.
-console.log('Fluidos disponíveis:', Object.keys(tables));
-
-// 2. Referências aos elementos do DOM
-const fluidSelect = document.getElementById('fluid');
-const tempSelect  = document.getElementById('temperature');
-const btnCalc     = document.getElementById('calculate-btn');
-const resultDiv   = document.getElementById('result');
-
-// 3. Funções e Eventos
-
-// Popula o seletor de temperaturas com base no fluido escolhido
-function populateTemps() {
-  const selectedFluid = fluidSelect.value;
-  
-  // Limpa opções antigas
-  tempSelect.innerHTML = ''; 
-
-  // Verifica se há dados para o fluido selecionado
-  if (tables[selectedFluid] && Object.keys(tables[selectedFluid]).length > 0) {
-    const temperatures = Object.keys(tables[selectedFluid]);
-    tempSelect.innerHTML = temperatures
-      .map(t => `<option value="${t}">${t.replace('.', ',')}</option>`)
-      .join('');
-    btnCalc.disabled = false; // Habilita o botão
-  } else {
-    tempSelect.innerHTML = '<option>Dados não disponíveis</option>';
-    btnCalc.disabled = true; // Desabilita o botão se não houver dados
-  }
-}
-
-// Calcula e exibe os resultados
-function calculateAndShowResults() {
-  const fluid = fluidSelect.value;
-  const temp  = tempSelect.value;
-
-  // Garante que há dados antes de tentar acessá-los
-  if (!tables[fluid] || !tables[fluid][temp]) {
-      resultDiv.innerHTML = `<p>Erro: Dados não encontrados para ${fluid} a ${temp}°C.</
+<script>
+  // Tabelas de propriedades (R134A, R410A, R404A) integradas do projeto R134
+  const tables = {
+    R134A: {
+      "-30": { P: 85.1, HL: 161.12, HV: 379.80 },
+      "-26.3": { P: 101.3, HL: 165.80, HV: 382.16 },  // ponto de pressão atmosférica
+      "-25": { P: 107.2, HL: 167.38, HV: 382.95 },
+      "-20": { P: 133.7, HL: 173.74, HV: 386.08 },
+      "-10": { P: 201.7, HL: 186.72, HV: 392.28 },
+      "0":   { P: 294.0, HL: 200.00, HV: 398.36 },
+      "10":  { P: 415.8, HL: 213.58, HV: 404.23 },
+      "20":  { P: 572.8, HL: 227.49, HV: 409.84 },
+      "30":  { P: 771.0, HL: 241.79, HV: 415.08 },
+      "40":  { P:1017.0, HL: 256.54, HV: 419.82 },
+      "50":  { P:1318.1, HL: 271.83, HV: 423.91 }
+      // ... (demais pontos conforme tabela completa)
+    },
+    R410A: {
+      "-40": { P: 175.0, HL: -0.00, HV: 262.83 },
+      "-30": { P: 269.6, HL: 13.99, HV: 267.54 },
+      "-20": { P: 399.6, HL: 28.24, HV: 271.89 },
+      "-10": { P: 573.1, HL: 42.80, HV: 275.78 },
+      "0":   { P: 798.7, HL: 57.76, HV: 279.12 },
+      "10":  { P:1085.7, HL: 73.21, HV: 281.78 },
+      "20":  { P:1444.2, HL: 89.27, HV: 283.55 },
+      "30":  { P:1885.1, HL:106.14, HV: 284.16 },
+      "40":  { P:2420.7, HL:124.09, HV: 283.13 },
+      "50":  { P:3065.2, HL:143.65, HV: 279.58 }
+      // ... (valores ilustrativos; completar conforme tabela)
+    },
+    R404A: {
+      "-40": { P: 170.6, HL: 87.9,  HV: 345.3 },
+      "-30": { P: 257.3, HL: 105.3, HV: 353.0 },
+      "-20": { P: 376.9, HL: 122.8, HV: 360.0 },
+      "-10": { P: 536.6, HL: 140.4, HV: 366.6 },
+      "0":   { P: 746.2, HL: 158.2, HV: 372.8 },
+      "10":  { P:1016.8, HL: 176.2, HV: 378.5 },
+      "20":  { P:1361.4, HL: 194.5, HV: 383.8 },
+      "30":  { P:1786.2, HL: 213.0, HV: 388.7 },
+      "40":  { P:2300.0, HL: 231.8, HV: 393.2 }
+      // ... (valores ilustrativos; completar conforme tabela)
+    }
+  };
